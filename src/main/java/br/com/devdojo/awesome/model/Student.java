@@ -15,7 +15,7 @@ public class Student {
     public static List<Student> studentList;
 
     public Student(String name, int id) {
-        this.name = name;
+        this(name);
         this.id = id;
     }
 
