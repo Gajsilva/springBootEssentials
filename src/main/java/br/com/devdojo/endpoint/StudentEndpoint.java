@@ -1,6 +1,5 @@
 package br.com.devdojo.endpoint;
 
-import br.com.devdojo.error.CustomErrorType;
 import br.com.devdojo.error.ResourceNotFoundException;
 import br.com.devdojo.model.Student;
 import br.com.devdojo.repository.StudentRepository;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -39,7 +39,7 @@ public class StudentEndpoint {
     }
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<?> save(@RequestBody Student student) {
+    public ResponseEntity<?> save(@Validated @RequestBody Student student) {
         return new ResponseEntity<>(studentDAO.save( student), HttpStatus.CREATED);
     }
     @DeleteMapping
@@ -48,7 +48,7 @@ public class StudentEndpoint {
         studentDAO.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping(path = "/deleteAll")
+    @DeleteMapping(path = "/deleteAll")
     public ResponseEntity<?> deleteAll(){
         studentDAO.deleteAll();
         return new ResponseEntity<>(HttpStatus.OK);

@@ -30,7 +30,7 @@ public class ResourceNotFoundDetails {
         return developerMessage;
     }
 
-    public static final class Builder {
+    public static final class Builder extends  {
         private String title;
         private int status;
         private String detail;
