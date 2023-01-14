@@ -1,42 +1,13 @@
 package br.com.devdojo.error;
 
-public class ResourceNotFoundDetails {
-    private String title;
-    private int status;
-    private String detail;
-    private long timestamp;
-    private String developerMessage;
+public class ResourceNotFoundDetails extends ErrorDetail {
 
-    public ResourceNotFoundDetails() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public String getDeveloperMessage() {
-        return developerMessage;
-    }
-
-    public static final class Builder extends  {
+    public static final class Builder {
         private String title;
         private int status;
         private String detail;
         private long timestamp;
         private String developerMessage;
-
         private Builder() {
         }
 
@@ -71,11 +42,11 @@ public class ResourceNotFoundDetails {
 
         public ResourceNotFoundDetails build() {
             ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
-            resourceNotFoundDetails.timestamp = this.timestamp;
-            resourceNotFoundDetails.title = this.title;
-            resourceNotFoundDetails.detail = this.detail;
-            resourceNotFoundDetails.developerMessage = this.developerMessage;
-            resourceNotFoundDetails.status = this.status;
+            resourceNotFoundDetails.setDeveloperMessage(developerMessage);
+            resourceNotFoundDetails.setTitle(title);
+            resourceNotFoundDetails.setDetail(detail);
+            resourceNotFoundDetails.setTimestamp(timestamp);
+            resourceNotFoundDetails.setStatus(status);
             return resourceNotFoundDetails;
         }
     }
