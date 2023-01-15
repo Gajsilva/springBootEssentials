@@ -1,6 +1,6 @@
 package br.com.devdojo.error;
 
-public class ResourceNotFoundDetails extends ErrorDetail {
+public class ValidationErrorDetails extends ErrorDetail {
 
     public static final class Builder {
         private String title;
@@ -40,8 +40,8 @@ public class ResourceNotFoundDetails extends ErrorDetail {
             return this;
         }
 
-        public ResourceNotFoundDetails build() {
-            ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
+        public ValidationErrorDetails build() {
+            ValidationErrorDetails resourceNotFoundDetails = new ValidationErrorDetails();
             resourceNotFoundDetails.setDeveloperMessage(developerMessage);
             resourceNotFoundDetails.setTitle(title);
             resourceNotFoundDetails.setDetail(detail);
