@@ -11,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 
 @RestController
 @RequestMapping("student")
+@Validated
+@Valid
 public class StudentEndpoint {
     private final StudentRepository studentDAO;
     @Autowired

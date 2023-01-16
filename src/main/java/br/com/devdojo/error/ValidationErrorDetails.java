@@ -1,13 +1,16 @@
 package br.com.devdojo.error;
 
-public class ValidationErrorDetails extends ErrorDetail {
-
+public class ValidationErrorDetails extends ErrorDetails {
+    private String field;
+    private String fieldMessage;
     public static final class Builder {
         private String title;
         private int status;
         private String detail;
         private long timestamp;
         private String developerMessage;
+        private String field;
+        private String fieldMessage;
         private Builder() {
         }
 
@@ -39,15 +42,33 @@ public class ValidationErrorDetails extends ErrorDetail {
             this.developerMessage = developerMessage;
             return this;
         }
+        public Builder field(String field) {
+            this.field = field;
+            return this;
+        }
+        public Builder fieldMessage(String fieldMessage) {
+            this.fieldMessage = fieldMessage;
+            return this;
+        }
 
         public ValidationErrorDetails build() {
-            ValidationErrorDetails resourceNotFoundDetails = new ValidationErrorDetails();
-            resourceNotFoundDetails.setDeveloperMessage(developerMessage);
-            resourceNotFoundDetails.setTitle(title);
-            resourceNotFoundDetails.setDetail(detail);
-            resourceNotFoundDetails.setTimestamp(timestamp);
-            resourceNotFoundDetails.setStatus(status);
-            return resourceNotFoundDetails;
+            ValidationErrorDetails validatorErrorDetails = new ValidationErrorDetails();
+            validatorErrorDetails.setDeveloperMessage(developerMessage);
+            validatorErrorDetails.setTitle(title);
+            validatorErrorDetails.setDetail(detail);
+            validatorErrorDetails.setTimestamp(timestamp);
+            validatorErrorDetails.setStatus(status);
+            validatorErrorDetails.fieldMessage = fieldMessage;
+            validatorErrorDetails.field = field;
+            return validatorErrorDetails;
         }
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getFieldMessage() {
+        return fieldMessage;
     }
 }
