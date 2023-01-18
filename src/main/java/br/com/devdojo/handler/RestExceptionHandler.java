@@ -1,10 +1,12 @@
 package br.com.devdojo.handler;
 
+import br.com.devdojo.error.ResourceNotFoundDetails;
 import br.com.devdojo.error.ResourceNotFoundException;
 import br.com.devdojo.error.ValidationErrorDetails;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourcerNotFoundExeception(ResourceNotFoundException rfnException){
-        ValidationErrorDetails rfnDetails = ValidationErrorDetails.Builder
+        ResourceNotFoundDetails rfnDetails = ResourceNotFoundDetails.Builder
                 .newBuilder()
                 .timestamp(new Date().getTime())
                 .status(HttpStatus.NOT_FOUND.value())
@@ -32,23 +34,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return new ResponseEntity<>(rfnDetails, HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleResourcerNotFoundExeception(MethodArgumentNotValidException manvException){
-        List<FieldError> fieldErrors = manvException.getBindingResult().getFieldErrors();
-        String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(","));
-        String fieldsMessage = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(","));
-        ValidationErrorDetails rfnDetails = ValidationErrorDetails.Builder
-                .newBuilder()
-                .timestamp(new Date().getTime())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .title("Field validation erros")
-                .detail("validation error")
-                .developerMessage(manvException.getClass().getName())
-                .field(fields)
-                .fieldMessage(fieldsMessage)
-                .build();
-        return new ResponseEntity<>(rfnDetails, HttpStatus.BAD_REQUEST);
-    }
+
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException manvException,
                                                                HttpHeaders headers, HttpStatus status, WebRequest request){
@@ -67,4 +53,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return new ResponseEntity<>(rfnDetails, HttpStatus.BAD_REQUEST);
     }
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return this.handleExceptionInternal(ex, (Object)null, headers, status, request);
+    }
+
+
 }
