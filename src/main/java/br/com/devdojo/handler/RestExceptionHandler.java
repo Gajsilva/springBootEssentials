@@ -1,5 +1,6 @@
 package br.com.devdojo.handler;
 
+import br.com.devdojo.error.ErrorDetails;
 import br.com.devdojo.error.ResourceNotFoundDetails;
 import br.com.devdojo.error.ResourceNotFoundException;
 import br.com.devdojo.error.ValidationErrorDetails;
@@ -53,8 +54,32 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return new ResponseEntity<>(rfnDetails, HttpStatus.BAD_REQUEST);
     }
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return this.handleExceptionInternal(ex, (Object)null, headers, status, request);
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
+                                                                  HttpStatus status, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.Builder
+                .newBuilder()
+                .timestamp(new Date().getTime())
+                .status(HttpStatus.NOT_FOUND.value())
+                .title("Resource not found")
+                .detail(ex.getMessage())
+                .developerMessage(ex.getClass().getName())
+                .build();
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.Builder
+                .newBuilder()
+                .timestamp(new Date().getTime())
+                .status(status.value())
+                .title("Internal Exception")
+                .detail(ex.getMessage())
+                .developerMessage(ex.getClass().getName())
+                .build();
+
+
+        return new ResponseEntity<>(body, headers, status);
     }
 
 
