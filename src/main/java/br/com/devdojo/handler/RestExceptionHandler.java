@@ -54,7 +54,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return new ResponseEntity<>(rfnDetails, HttpStatus.BAD_REQUEST);
     }
-    @Override
+   /* @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.Builder
@@ -67,8 +67,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
+    */
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body,
+                                                             HttpHeaders headers, HttpStatus status,
+                                                             WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.Builder
                 .newBuilder()
                 .timestamp(new Date().getTime())
@@ -79,7 +83,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
 
-        return new ResponseEntity<>(body, headers, status);
+        return new ResponseEntity<>(errorDetails, headers, status);
     }
 
 

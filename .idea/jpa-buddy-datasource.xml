@@ -2,8 +2,7 @@
 <project version="4">
   <component name="JpbDataSourceConfig">
     <data-sources>
-      <data-source id="30072e8e-013f-4f40-85f4-ed6f684622bf" name="springBootEssentials" url="jdbc:mysql://localhost/springBootEssentials?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC" driverClass="com.mysql.jdbc.Driver" />
-      <data-source id="0d280226-c308-45f9-bbb9-08dbdbeaa313" name="school" url="jdbc:mysql://localhost/springBootEssentials?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC" driverClass="com.mysql.jdbc.Driver" />
+      <data-source id="0d280226-c308-45f9-bbb9-08dbdbeaa313" name="school" url="jdbc:mysql://localhost/3306?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC" driverClass="com.mysql.jdbc.Driver" />
     </data-sources>
   </component>
 </project>
