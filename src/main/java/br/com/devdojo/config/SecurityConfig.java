@@ -19,14 +19,18 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().authenticated()
-                )
-                .httpBasic(withDefaults());
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable();
         return http.build();
     }
     @Bean
