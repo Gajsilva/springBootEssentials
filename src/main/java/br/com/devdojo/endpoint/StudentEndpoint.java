@@ -18,48 +18,47 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("student")
-@Validated
-@Valid
+@RequestMapping("v1")
 public class StudentEndpoint {
     private final StudentRepository studentDAO;
     @Autowired
     public StudentEndpoint(StudentRepository studentDAO){
         this.studentDAO = studentDAO;
     }
-    @GetMapping
+    @GetMapping(path = "protected/students")
     public ResponseEntity<?> listAll(Pageable pageable){
         //System.out.println(dateUtil.formatLocalDAteTimeToDatabaseStyle(LocalDateTime.now()));
         return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK) ;
     }
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "protected/students/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") long id){
         verifyIfStudentExists(id);
         Optional <Student> student = studentDAO.findById(id);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
-    @GetMapping(path = "/findByName/{name}")
+    @GetMapping(path = "protected/students/findByName/{name}")
     public ResponseEntity<?> findStudentByName(@PathVariable String name){
         return new ResponseEntity<>(studentDAO.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
     }
-    @PostMapping
+    @PostMapping(path = "admin/students")
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Validated @RequestBody Student student) {
         return new ResponseEntity<>(studentDAO.save( student), HttpStatus.CREATED);
     }
-    @DeleteMapping
+    @DeleteMapping(path = "admin/students/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         verifyIfStudentExists(id);
         studentDAO.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @DeleteMapping(path = "/deleteAll")
+    @DeleteMapping(path = "admin/students/deleteAll")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteAll(){
         studentDAO.deleteAll();
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping
+    @PutMapping(path = "admin/students")
     public ResponseEntity<?> update(@RequestBody Student student) {
         verifyIfStudentExists(student.getId());
         studentDAO.save(student);
